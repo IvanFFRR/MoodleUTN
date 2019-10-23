@@ -16,6 +16,21 @@ public class Alumno extends Persona  {
     String calle;
     int altura;
     int codigoPostal;
+    
+    public Alumno() {}
+    
+    public Alumno(int legajo, String nombre, String apellido, int documento, Date fdn, String calle, int altura, int cp, String email, String telefono) {
+        this.legajo = legajo;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.documento = documento;
+        this.fechaDeNacimiento = fdn;
+        this.calle = calle;
+        this.altura = altura;
+        this.codigoPostal = cp;
+        this.email = email;
+        this.telefono = telefono;
+    }
 
     public Alumno(int id, int legajo, String nombre, String apellido, int documento, Date fechaDeNacimiento, String calle, int altura, int codigoPostal, String email, String telefono) {
         this.id = id;
