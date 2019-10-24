@@ -133,6 +133,16 @@ public class Alumno extends Persona  {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+    public int getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(int tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+    
+    
     
     @Override
     public String toString() {

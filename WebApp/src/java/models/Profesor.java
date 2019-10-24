@@ -77,10 +77,20 @@ public class Profesor extends Persona {
         this.telefono = telefono;
     }
 
+    public int getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(int tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+    
+    
+
     public Profesor() {
     }
     
-    public Profesor(int id, int legajo, String nombre, String apellido, int documento, Date fechaDeNacimiento, String email, String telefono) {
+    public Profesor(int legajo, String nombre, String apellido, int documento, Date fechaDeNacimiento, String email, String telefono) {
         this.id = id;
         this.legajo = legajo;
         this.nombre = nombre;

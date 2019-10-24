@@ -14,8 +14,7 @@ public class Materia {
     String nombre;
     Profesor profesor;
 
-    public Materia(int id, String nombre, Profesor profesor) {
-        this.id = id;
+    public Materia(String nombre, Profesor profesor) {
         this.nombre = nombre;
         this.profesor = profesor;
     }

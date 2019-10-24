@@ -16,6 +16,7 @@ public abstract class Persona {
     int legajo;
     String nombre;
     String apellido;
+    int tipoDocumento;
     int documento;
     Date fechaDeNacimiento;
     String email;
