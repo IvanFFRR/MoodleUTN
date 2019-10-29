@@ -6,6 +6,7 @@
 package controllers;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -187,9 +188,72 @@ public class DataAccess {
         return lista;
     }
     
+    
+    public ArrayList<Descarga> getDescargas(Recurso r) {
+        ArrayList<Descarga> lista = new ArrayList<>();
+        String sql = "SELECT d.fecha, a.nombre FROM Descargas d, Alumnos a, Materias m, Recursos r "
+                + "WHERE a.id = d.alumno AND d.recurso = r.id AND r.materia = m.id "
+                + "AND r.id = @r"; 
+        
+        try {
+            Conectar();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setInt(1, r.getId());
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                Date fecha = rs.getDate(1);
+                String nombreAlumno = rs.getString(2);
+                                
+                Alumno a = new Alumno();
+                a.setNombre(nombreAlumno);
+                
+                Descarga d = new Descarga(fecha, a, r);
+                lista.add(d);                
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error al obtener una descarga: " + e.getMessage());
+        }
+        
+        return lista;
+    }
+    
     public ArrayList<Descarga> getDescargas(Alumno a) {
         ArrayList<Descarga> lista = new ArrayList<>();
-        /* COMPLETAR */
+        String sql = "SELECT d.fecha, m.nombre AS 'Materia' , r.recurso "
+                + "FROM Descargas d, Alumnos a, Materias m, Recursos r "
+                + "WHERE a.id = d.alumno AND d.recurso = r.id AND r.materia = m.id"
+                + "AND a.id = @id";
+        
+        try {
+            Conectar();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setInt(1, a.getId());
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                Date fecha = rs.getDate(1);
+                String nombreMateria = rs.getString(2);
+                String rutaRecurso = rs.getString(3);
+                
+                Materia m = new Materia();
+                m.setNombre(nombreMateria);
+                Recurso r = new Recurso();
+                r.setRuta(rutaRecurso);
+                r.setMateria(m);
+                
+                Descarga d = new Descarga(fecha, a, r);
+                
+                lista.add(d);               
+                
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener una descarga: " + e.getMessage());
+        } finally {
+            Desconectar();
+        }
+        
         return lista;
     }
     

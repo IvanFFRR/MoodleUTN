@@ -13,6 +13,8 @@ public class Materia {
     int id;
     String nombre;
     Profesor profesor;
+    
+    public Materia(){}
 
     public Materia(String nombre, Profesor profesor) {
         this.nombre = nombre;

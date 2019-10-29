@@ -26,7 +26,7 @@ public class Recurso {
     
     @Override
     public String toString() {
-        return String.format("% - %s (%s)", fecha, ruta, materia);
+        return String.format("%s - %s (%s)", fecha, ruta, materia);
     }
 
     public int getId() {
