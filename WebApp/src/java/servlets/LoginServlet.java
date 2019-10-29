@@ -11,15 +11,20 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.Alumno;
 import models.Credenciales;
+import models.Profesor;
 
 /**
  *
  * @author IVAN
  */
+@WebServlet(name = "ServletLogin", urlPatterns = {"/Login"})
 public class LoginServlet extends HttpServlet {
 
     
@@ -40,20 +45,38 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        
         String user = request.getParameter("txtUser");
         String pass = request.getParameter("txtPass");
+        String persona = (String)request.getParameter("Persona");
         DataAccess data = new DataAccess();
-        ArrayList<Credenciales> credenciales = data.getCredenciales();
-        for (Credenciales c : credenciales) {
-            if(user.equals(c.getUser()) & pass.equals(c.getPass())) {
-                request.getSession().setAttribute("user", user);
+        
+        if(persona.equals("alumno")) {
+            ArrayList<Alumno> alumnos = data.getAlumnos();
+            for (Alumno a : alumnos) {
+                if (user.equals(a.getLegajo()) && pass.equals(a.getDocumento())) {
+                    String nombreUsuario = String.format("%s %s", a.getNombre(), a.getApellido());
+                    session.setAttribute("user", nombreUsuario);
+                    session.setAttribute("persona", persona);
+                }
+            }
+        } else {
+            if (persona.equals("profesor")) {
+                ArrayList<Profesor> profesores = data.getProfesores();
+                for (Profesor p : profesores) {
+                    if (user.equals(p.getLegajo()) && pass.equals(p.getDocumento())) {
+                        String nombreUsuario = String.format("%s %s", p.getNombre(), p.getApellido());
+                        session.setAttribute("persona", persona);
+                        session.setAttribute("user", nombreUsuario);
+                    }
+                }
             }
         }
-                 
-            
+                
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
-        rd.forward(request, response);
-        }
+            rd.forward(request, response);
+    }
     
 
     /**

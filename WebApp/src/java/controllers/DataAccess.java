@@ -51,6 +51,40 @@ public class DataAccess {
         }
     }
     
+    public ArrayList<Alumno> getAlumnos() {
+        ArrayList<Alumno> lista = new ArrayList<>();
+        String sql = "SELECT * from Alumnos";
+        
+        try {
+            Conectar();
+            Statement st = cnn.createStatement();
+            ResultSet rs = st.executeQuery(sql);            
+            while(rs.next()) {
+                Alumno a = new Alumno(
+                        rs.getInt("legajo"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getInt("numeroDocumento"),
+                        rs.getDate("fechaNacimiento"),
+                        rs.getString("calle"),
+                        rs.getInt("altura"),
+                        rs.getInt("codigoPostal"),
+                        rs.getString("email"),
+                        rs.getString("telefono")
+                );
+                
+                lista.add(a);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar alumnos: " + e.getMessage());
+        } finally {
+            Desconectar();
+        }
+        
+        return lista;
+    }
+    
     public ArrayList<Alumno> getAlumnos(Materia m) {
         ArrayList<Alumno> lista = new ArrayList<>();
         String sql = "SELECT a.* FROM Alumnos a, Materias m, Inscripciones i WHERE a.id = i.alumno AND m.id = i.materia AND m.id = @materia";
@@ -390,7 +424,7 @@ public class DataAccess {
         return flag;
     }
     
-    public ArrayList<Credenciales> getCredenciales() {
+    public ArrayList<Credenciales> getCredencialesAlumnos() {
         
         ArrayList<Credenciales> lista = new ArrayList<>();
         String sql = "SELECT numeroDocumento, legajo FROM Alumnos";
