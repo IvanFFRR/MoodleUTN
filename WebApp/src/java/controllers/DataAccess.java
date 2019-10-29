@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import models.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -22,9 +23,15 @@ import java.util.ArrayList;
  */
 public class DataAccess {
     Connection cnn; 
-    String cstring = "jdbc:sqlserver://localhost;databaseName=MoodleUTN";
-    String user = "sa";
-    String pass = "maximo";
+    final String cstring;
+    final String user;
+    final String pass;
+
+    public DataAccess() {
+        this.cstring = "jdbc:sqlserver://localhost;databaseName=MoodleUTN";
+        this.pass = "maximo";
+        this.user = "sa";      
+    }
     
     public void Conectar() {
         try {
@@ -77,7 +84,7 @@ public class DataAccess {
         }
 
         return lista;
-    }
+    } //obtiene todos los alumnos de una determinada materia
     
     public ArrayList<Materia> getMaterias(Profesor p) {
         ArrayList<Materia> lista = new ArrayList<>();
@@ -101,7 +108,7 @@ public class DataAccess {
             Desconectar();
         }
         return lista;
-    }
+    } //obtiene todas las materias a cargo de un profesor
     
     public ArrayList<Materia> getMaterias() {
         ArrayList<Materia> lista = new ArrayList<>();
@@ -129,7 +136,7 @@ public class DataAccess {
             Desconectar();
         }
         return lista;
-    }
+    } //obtiene todas las materias
     
     public ArrayList<Profesor> getProfesores() {
         ArrayList<Profesor> lista = new ArrayList<>();
@@ -160,7 +167,7 @@ public class DataAccess {
         }
         
         return lista;
-    }
+    } //obtiene todos los profesores
     
     public ArrayList<Recurso> getRecursos(Materia m) {
         ArrayList<Recurso> lista = new ArrayList<>();
@@ -186,9 +193,8 @@ public class DataAccess {
             Desconectar();
         }
         return lista;
-    }
-    
-    
+    } //obtiene todos los recursos de una materia
+        
     public ArrayList<Descarga> getDescargas(Recurso r) {
         ArrayList<Descarga> lista = new ArrayList<>();
         String sql = "SELECT d.fecha, a.nombre FROM Descargas d, Alumnos a, Materias m, Recursos r "
@@ -214,10 +220,12 @@ public class DataAccess {
             
         } catch (SQLException e) {
             System.out.println("Error al obtener una descarga: " + e.getMessage());
+        } finally {
+            Desconectar();
         }
         
         return lista;
-    }
+    } //obtiene todos las descargas de un cierto recurso
     
     public ArrayList<Descarga> getDescargas(Alumno a) {
         ArrayList<Descarga> lista = new ArrayList<>();
@@ -255,7 +263,7 @@ public class DataAccess {
         }
         
         return lista;
-    }
+    }//obtiene todos los recursos descargados por un determinado alumno
     
     public boolean setAlumno(Alumno a) {
         boolean flag = false;
@@ -381,4 +389,48 @@ public class DataAccess {
         }
         return flag;
     }
+    
+    public ArrayList<Credenciales> getCredenciales() {
+        
+        ArrayList<Credenciales> lista = new ArrayList<>();
+        String sql = "SELECT numeroDocumento, legajo FROM Alumnos";
+        
+        try {
+            Conectar();
+            Statement st = cnn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()) {
+                int usuario = rs.getInt(1);
+                int contra = rs.getInt(2);
+                Credenciales login = new Credenciales(usuario, contra);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las credenciales: " + e.getMessage());
+        } finally {
+            Desconectar();
+        }
+        
+        return lista;
+    } //obtiene una lista de todas las credenciales registradas
+    
+    public boolean setLogin(Alumno a) { 
+        boolean flag = false;
+        String sql = "INSERT INTO Logins VALUES (@alumno, @fecha)";
+        
+        try {
+            Conectar();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setInt(1, a.getId());
+            ps.setDate(1, (java.sql.Date)Calendar.getInstance().getTime());
+            flag = ps.execute();
+        } catch (SQLException e) {
+            System.out.println("Error al crear un registro en el historial de logins: " + e.getMessage());
+        } finally {
+            Desconectar();
+        }
+        
+        
+        return flag;
+    } //ingresa un registro en el historial de sesiones iniciadas
 }
