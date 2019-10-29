@@ -40,20 +40,21 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int user = Integer.parseInt(request.getParameter("txtUser"));
-        int pass = Integer.parseInt(request.getParameter("txtPass"));
+        String user = request.getParameter("txtUser");
+        String pass = request.getParameter("txtPass");
         DataAccess data = new DataAccess();
         ArrayList<Credenciales> credenciales = data.getCredenciales();
         for (Credenciales c : credenciales) {
-            if(user == c.getUser() & pass == c.getPass()) {
+            if(user.equals(c.getUser()) & pass.equals(c.getPass())) {
                 request.getSession().setAttribute("user", user);
-                break;
             }
+        }
+                 
             
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
         }
-    }
+    
 
     /**
      * Returns a short description of the servlet.

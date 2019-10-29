@@ -401,9 +401,12 @@ public class DataAccess {
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()) {
-                int usuario = rs.getInt(1);
-                int contra = rs.getInt(2);
+                int iUser = rs.getInt(1);
+                int iPass = rs.getInt(2);
+                String usuario = Integer.toString(iUser);
+                String contra = Integer.toString(iPass);
                 Credenciales login = new Credenciales(usuario, contra);
+                lista.add(login);
             }
         } catch (SQLException e) {
             System.out.println("Error al obtener las credenciales: " + e.getMessage());

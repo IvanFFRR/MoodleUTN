@@ -10,27 +10,27 @@ package models;
  * @author IVAN
  */
 public class Credenciales {
-    int user;
-    int pass;
+    String user;
+    String pass;
 
-    public Credenciales(int user, int pass) {
+    public Credenciales(String user, String pass) {
         this.user = user;
         this.pass = pass;
     }
 
-    public int getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(int user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public int getPass() {
+    public String getPass() {
         return pass;
     }
 
-    public void setPass(int pass) {
+    public void setPass(String pass) {
         this.pass = pass;
     }
 
