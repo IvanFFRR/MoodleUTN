@@ -37,6 +37,7 @@
                         </p>
                         <input type="submit" class="button" value="Ingresar">                
                     </form> 
+                    ${user}
             </c:when>
             <c:otherwise>
                 <h1> Bienvenido ${user}</h1>

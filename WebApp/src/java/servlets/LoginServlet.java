@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
             if (persona.equals("profesor")) {
                 ArrayList<Profesor> profesores = data.getProfesores();
                 for (Profesor p : profesores) {
-                    if (user.equals(p.getLegajo()) && pass.equals(p.getDocumento())) {
+                    if (user.equals(Integer.toString(p.getLegajo())) && pass.equals(Integer.toString(p.getDocumento()))) {
                         String nombreUsuario = String.format("%s %s", p.getNombre(), p.getApellido());
                         session.setAttribute("persona", persona);
                         session.setAttribute("user", nombreUsuario);

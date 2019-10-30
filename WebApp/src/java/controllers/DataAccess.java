@@ -23,20 +23,19 @@ import java.util.Calendar;
  */
 public class DataAccess {
     Connection cnn; 
-    final String cstring;
-    final String user;
-    final String pass;
+    String cstring = "jdbc:sqlserver://localhost;databaseName=MoodleUTN";
+    String pass = "maximo";
+    String user = "sa";  
 
     public DataAccess() {
-        this.cstring = "jdbc:sqlserver://localhost;databaseName=MoodleUTN";
-        this.pass = "maximo";
-        this.user = "sa";      
+            
     }
     
     public void Conectar() {
         try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
             cnn = DriverManager.getConnection(cstring, user, pass);
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
             System.out.println("Error al conectar a la base de datos. ERROR:" + e.getMessage());
         }
     }
