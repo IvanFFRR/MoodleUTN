@@ -32,7 +32,9 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+        
+       RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+            rd.forward(request, response);
     }
 
     /**
@@ -46,7 +48,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession();        
         
         String user = request.getParameter("txtUser");
         String pass = request.getParameter("txtPass");
@@ -56,7 +58,7 @@ public class LoginServlet extends HttpServlet {
         if(persona.equals("alumno")) {
             ArrayList<Alumno> alumnos = data.getAlumnos();
             for (Alumno a : alumnos) {
-                if (user.equals(a.getLegajo()) && pass.equals(a.getDocumento())) {
+                if (user.equals(Integer.toString(a.getLegajo())) && pass.equals(Integer.toString(a.getDocumento()))) {
                     String nombreUsuario = String.format("%s %s", a.getNombre(), a.getApellido());
                     int id = a.getId();
                     ArrayList<Materia> materiasInscriptas = data.getMaterias(a);
@@ -80,6 +82,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }
         }
+        
                 
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
