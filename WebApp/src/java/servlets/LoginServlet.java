@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Alumno;
 import models.Credenciales;
+import models.Materia;
 import models.Profesor;
 
 /**
@@ -49,7 +50,7 @@ public class LoginServlet extends HttpServlet {
         
         String user = request.getParameter("txtUser");
         String pass = request.getParameter("txtPass");
-        String persona = (String)request.getParameter("Persona");
+        String persona = request.getParameter("Persona");
         DataAccess data = new DataAccess();
         
         if(persona.equals("alumno")) {
@@ -57,6 +58,10 @@ public class LoginServlet extends HttpServlet {
             for (Alumno a : alumnos) {
                 if (user.equals(a.getLegajo()) && pass.equals(a.getDocumento())) {
                     String nombreUsuario = String.format("%s %s", a.getNombre(), a.getApellido());
+                    int id = a.getId();
+                    ArrayList<Materia> materiasInscriptas = data.getMaterias(a);
+                    session.setAttribute("id", id);
+                    session.setAttribute("materiasInscriptas", materiasInscriptas);
                     session.setAttribute("user", nombreUsuario);
                     session.setAttribute("persona", persona);
                 }
@@ -67,8 +72,10 @@ public class LoginServlet extends HttpServlet {
                 for (Profesor p : profesores) {
                     if (user.equals(Integer.toString(p.getLegajo())) && pass.equals(Integer.toString(p.getDocumento()))) {
                         String nombreUsuario = String.format("%s %s", p.getNombre(), p.getApellido());
+                        int id = p.getId();
                         session.setAttribute("persona", persona);
                         session.setAttribute("user", nombreUsuario);
+                        session.setAttribute("id", id);
                     }
                 }
             }

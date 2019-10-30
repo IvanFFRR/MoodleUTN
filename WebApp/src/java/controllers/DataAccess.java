@@ -23,12 +23,12 @@ import java.util.Calendar;
  */
 public class DataAccess {
     Connection cnn; 
-    String cstring = "jdbc:sqlserver://localhost;databaseName=MoodleUTN";
-    String pass = "maximo";
-    String user = "sa";  
+    final String cstring, user, pass;
 
     public DataAccess() {
-            
+        this.cstring = "jdbc:sqlserver://localhost;databaseName=MoodleUTN";
+        this.pass = "maximo";
+        this.user = "sa";      
     }
     
     public void Conectar() {
@@ -71,6 +71,7 @@ public class DataAccess {
                         rs.getString("email"),
                         rs.getString("telefono")
                 );
+                a.setId(rs.getInt("id"));
                 
                 lista.add(a);
             }
@@ -106,6 +107,7 @@ public class DataAccess {
                         rs.getString("email"),
                         rs.getString("telefono")
                 );
+                a.setId(rs.getInt("id"));
                 
                 lista.add(a);
             }
@@ -142,6 +144,41 @@ public class DataAccess {
         }
         return lista;
     } //obtiene todas las materias a cargo de un profesor
+    
+    public ArrayList<Materia> getMaterias(Alumno a) {
+        ArrayList<Materia> lista = new ArrayList<>();
+        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email\n" +
+                "FROM Materias m, Alumnos a, Inscripciones i, Profesores p\n" +
+                "WHERE m.profesor = p.id AND a.id = i.alumno AND m.id = i.materia AND a.id = @a";        
+        try {
+            Conectar();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setInt(1, a.getId());
+            
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                int idMateria  = rs.getInt(1);
+                String nombreMateria = rs.getString(2);
+                int legajo = rs.getInt(3);
+                String nombreProfesor = rs.getString(4);
+                String apellidoProfesor = rs.getString(5);
+                int documento = rs.getInt(6);
+                Date nacimiento = rs.getDate(7);
+                String email = rs.getString(8);
+                
+                Profesor profe = new Profesor(legajo, nombreProfesor, apellidoProfesor, documento, nacimiento, email, "");
+                Materia materia = new Materia(nombreMateria, profe);
+                materia.setId(idMateria);
+                
+                lista.add(materia);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cargar materias: " + e.getMessage());
+        }
+        
+        return lista;
+    }
     
     public ArrayList<Materia> getMaterias() {
         ArrayList<Materia> lista = new ArrayList<>();
@@ -190,6 +227,7 @@ public class DataAccess {
                         rs.getString("email"),
                         rs.getString("telefono")
                 );
+                p.setId(rs.getInt("id"));
                 
                 lista.add(p);
             }
