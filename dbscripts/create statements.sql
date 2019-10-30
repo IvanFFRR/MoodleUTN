@@ -14,6 +14,8 @@ CREATE TABLE Alumnos(
 	CONSTRAINT FK_AlumnosTipoDocumento FOREIGN KEY (tipoDocumento) REFERENCES TiposDocumento (id)
 )
 
+
+
 CREATE TABLE Profesores(
 	id INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
 	legajo INT NOT NULL,
@@ -25,6 +27,7 @@ CREATE TABLE Profesores(
 	email NVARCHAR(50) NOT NULL,
 	CONSTRAINT FK_ProfesoresTipoDocumento FOREIGN KEY (tipoDocumento) REFERENCES TiposDocumento (id)
 )
+
 
 CREATE TABLE Materias( 
 	id INT NOT NULL IDENTITY(1, 1) PRIMARY KEY,
@@ -57,4 +60,51 @@ CREATE TABLE Descargas(
 		CONSTRAINT FK_DescargasAlumno FOREIGN KEY (alumno) REFERENCES Alumnos(id),
 		CONSTRAINT FK_DescargasRecurso FOREIGN KEY (recurso) REFERENCES Recursos(id)
 )
+
+CREATE TABLE Login(
+	id INT NOT NULL PRIMARY KEY,
+	fecha DATE DEFAULT GETDATE(),
+	legajo INT NOT NULL,
+	documento INT NOT NULL,
+)
+
+CREATE PROC mostrarErrores
+AS
+PRINT N'La transacción se ha completado con errores'
+SELECT ERROR_NUMBER() AS 'Número de error', 
+		ERROR_SEVERITY() AS 'Severidad', 
+		ERROR_STATE() AS 'Estado', 
+		ERROR_LINE() AS 'Línea', 
+		ERROR_PROCEDURE() AS 'Proc/Trigger', 
+		ERROR_MESSAGE() AS 'Mensaje'
+
+CREATE FUNCTION dbo.ExisteUsuario (@user INT, @pass INT) 
+RETURNS BIT
+	AS
+		BEGIN
+			DECLARE @bool BIT
+			SELECT @bool = COUNT(id) FROM Alumnos WHERE legajo = @user AND numeroDocumento = @pass
+			IF (@bool IS NULL)
+				SET @bool = 0
+			RETURN @bool
+		END
+
+CREATE PROC LoginAlumno
+@user INT, @pass INT
+AS
+	BEGIN TRAN
+	DECLARE @existe BIT;
+	SELECT @existe = dbo.ExisteUsuario(@user, @pass)
+		BEGIN TRY
+			IF @existe = 1
+					INSERT INTO Login(legajo, documento) VALUES(@user, @pass)
+		END TRY
+		BEGIN CATCH
+			EXEC mostrarErrores
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN
+		END CATCH
+		IF @@TRANCOUNT > 0
+			COMMIT TRAN
+
 
