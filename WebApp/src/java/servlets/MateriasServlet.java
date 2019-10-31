@@ -65,9 +65,12 @@ public class MateriasServlet extends HttpServlet {
         if(id != null) {
             for (Materia materia : materias) {
                 if(Integer.parseInt(id) == materia.getId()) {
+                    ArrayList<Alumno> alumnos = data.getAlumnos(materia);
+                    session.setAttribute("alumnos", alumnos);                                        
                     session.setAttribute("materia", materia);
                     rd = getServletContext().getRequestDispatcher("/materia.jsp");
                     rd.forward(request, response);
+                    break;
                 }
             }
         }
