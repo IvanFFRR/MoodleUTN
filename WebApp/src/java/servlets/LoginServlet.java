@@ -59,13 +59,10 @@ public class LoginServlet extends HttpServlet {
             ArrayList<Alumno> alumnos = data.getAlumnos();
             for (Alumno a : alumnos) {
                 if (user.equals(Integer.toString(a.getLegajo())) && pass.equals(Integer.toString(a.getDocumento()))) {
-                    String nombreUsuario = String.format("%s %s", a.getNombre(), a.getApellido());
-                    int id = a.getId();
                     ArrayList<Materia> materiasInscriptas = data.getMaterias(a);
-                    session.setAttribute("id", id);
-                    session.setAttribute("materiasInscriptas", materiasInscriptas);
-                    session.setAttribute("user", nombreUsuario);
+                    session.setAttribute("user", a);
                     session.setAttribute("persona", persona);
+                    break;
                 }
             }
         } else {
@@ -74,16 +71,14 @@ public class LoginServlet extends HttpServlet {
                 for (Profesor p : profesores) {
                     if (user.equals(Integer.toString(p.getLegajo())) && pass.equals(Integer.toString(p.getDocumento()))) {
                         String nombreUsuario = String.format("%s %s", p.getNombre(), p.getApellido());
-                        int id = p.getId();
                         session.setAttribute("persona", persona);
-                        session.setAttribute("user", nombreUsuario);
-                        session.setAttribute("id", id);
+                        session.setAttribute("user", p);
+                        break;
                     }
                 }
             }
         }
-        
-                
+                        
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
     }

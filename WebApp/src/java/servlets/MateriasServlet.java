@@ -7,7 +7,6 @@ package servlets;
 
 import controllers.DataAccess;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,18 +26,6 @@ import models.Profesor;
 @WebServlet(name = "MateriasServlet", urlPatterns = {"/materias"})
 public class MateriasServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-
-
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -54,23 +41,35 @@ public class MateriasServlet extends HttpServlet {
         DataAccess data = new DataAccess();
         ArrayList<Materia> materias = new ArrayList<>();
         HttpSession session = request.getSession();
+        RequestDispatcher rd;
+        String id = request.getParameter("id");
+        
         if (session.getAttribute("persona") == "alumno") {
-            int id = (int)session.getAttribute("id");
-            Alumno a = new Alumno();
-            a.setId(id);
-            materias = data.getMaterias(a);
+            Alumno a = (Alumno)session.getAttribute("user");
+            materias = data.getMaterias(a);            
         } else {
             if(session.getAttribute("persona") == "profesor") {
-                int id = (int)session.getAttribute("id");
-                Profesor p = new Profesor();
-                p.setId(id);
+                Profesor p = (Profesor)session.getAttribute("user");
                 materias = data.getMaterias(p);
+            } else {
+               rd = getServletContext().getRequestDispatcher("/login");
+               rd.forward(request, response);
             }
-        }        
+        } 
+        
+        if(id != null) {
+            for (Materia materia : materias) {
+                if(Integer.parseInt(id) == materia.getId()) {
+                    session.setAttribute("materia", materia);
+                    rd = getServletContext().getRequestDispatcher("/materia.jsp");
+                    rd.forward(request, response);
+                }
+            }
+        }
         
         request.setAttribute("materias", materias);
 
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/materias.jsp");
+        rd = getServletContext().getRequestDispatcher("/materias.jsp");
         rd.forward(request, response);
     }
 
