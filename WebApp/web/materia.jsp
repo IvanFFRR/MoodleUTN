@@ -1,7 +1,7 @@
 <%-- 
-    Document   : recursos
-    Created on : 30-oct-2019, 12:53:49
-    Author     : IVAN
+    Document   : materia
+    Created on : 30/10/2019, 20:12:45
+    Author     : alumno
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,10 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Recursos</title>
+        <title>${materia.nombre}</title>
         <jsp:include page="menu.jsp"></jsp:include>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>MATERIA TEST${materia.nombre}</h1>
     </body>
 </html>
