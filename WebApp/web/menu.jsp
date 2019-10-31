@@ -24,8 +24,8 @@
           }
 
           .topnav a {
-            float: left;
-            color: darkgrey;
+            float: right;
+            color: #333333;
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
@@ -37,9 +37,12 @@
           }
           .topnav a:hover {
               background-color: black;
+              color: #DDDDDD;
           }
+          
 
         </style>
+        
     </head>
     <body>
         
@@ -50,8 +53,11 @@
                     <a class="active" href="login" style="float: right">Iniciar Sesión</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="materias">Materias</a>
-                    ${user.nombre} <a href="logout">Cerrar Sesión</a>
+                     <div id="botones" class="botones">
+                          <a href="logout">⏻</a>
+                          <a href="alumno">${user.nombre} ${user.apellido}</a>
+                          <a href="materias">Materias</a>
+                    </div>                       
                 </c:otherwise>
             </c:choose>
         

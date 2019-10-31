@@ -20,13 +20,13 @@
         <h1>Materias</h1>
         <table>
             <tr>
-                <td><th>Materia</th></td>
-                <td><th>Profesor</th></td> 
+                <th>Materia</th>
+                <th>Profesor</th>
             </tr>
                 <c:forEach items="${materias}" var="m">
                 <tr>
                     <td><a href="materias?id=${m.id}">${m.nombre}</a></td>
-                    <td><a href="profesor?id=${m.profesor.id}">${m.profesor.nombre}</a>/td>
+                    <td><a href="profesor?id=${m.profesor.id}">${m.profesor.apellido}, ${m.profesor.nombre}</a></td>
                 </tr>
                 </c:forEach>
           </table>

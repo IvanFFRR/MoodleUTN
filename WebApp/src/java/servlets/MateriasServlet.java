@@ -43,19 +43,24 @@ public class MateriasServlet extends HttpServlet {
         HttpSession session = request.getSession();
         RequestDispatcher rd;
         String id = request.getParameter("id");
+        String persona = (String)session.getAttribute("persona");
         
-        if (session.getAttribute("persona") == "alumno") {
+        if(session.getAttribute("user") != null) {
+             if ("alumno".equals(persona)) {
             Alumno a = (Alumno)session.getAttribute("user");
             materias = data.getMaterias(a);            
-        } else {
-            if(session.getAttribute("persona") == "profesor") {
+            } else {
+            if("profesor".equals(persona)) {
                 Profesor p = (Profesor)session.getAttribute("user");
                 materias = data.getMaterias(p);
-            } else {
+                }
+            }
+        } else {
                rd = getServletContext().getRequestDispatcher("/login");
                rd.forward(request, response);
             }
-        } 
+              
+        
         
         if(id != null) {
             for (Materia materia : materias) {

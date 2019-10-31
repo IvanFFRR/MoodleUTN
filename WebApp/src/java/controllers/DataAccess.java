@@ -87,7 +87,7 @@ public class DataAccess {
     
     public ArrayList<Alumno> getAlumnos(Materia m) {
         ArrayList<Alumno> lista = new ArrayList<>();
-        String sql = "SELECT a.* FROM Alumnos a, Materias m, Inscripciones i WHERE a.id = i.alumno AND m.id = i.materia AND m.id = @materia";
+        String sql = "SELECT a.* FROM Alumnos a, Materias m, Inscripciones i WHERE a.id = i.alumno AND m.id = i.materia AND m.id = ?";
         
         try {
             Conectar();
@@ -123,7 +123,7 @@ public class DataAccess {
     
     public ArrayList<Materia> getMaterias(Profesor p) {
         ArrayList<Materia> lista = new ArrayList<>();
-        String sql = "SELECT m.* FROM Materias m, Profesores p WHERE p.id = m.profesor AND p.id = @profesor";
+        String sql = "SELECT m.* FROM Materias m, Profesores p WHERE p.id = m.profesor AND p.id = ?";
         
         try {
             Conectar();
@@ -147,9 +147,7 @@ public class DataAccess {
     
     public ArrayList<Materia> getMaterias(Alumno a) {
         ArrayList<Materia> lista = new ArrayList<>();
-        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email\n" +
-                "FROM Materias m, Alumnos a, Inscripciones i, Profesores p\n" +
-                "WHERE m.profesor = p.id AND a.id = i.alumno AND m.id = i.materia AND a.id = @a";        
+        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email FROM Materias m, Alumnos a, Inscripciones i, Profesores p WHERE m.profesor = p.id AND a.id = i.alumno AND m.id = i.materia AND a.id = ?";        
         try {
             Conectar();
             PreparedStatement ps = cnn.prepareStatement(sql);
@@ -163,9 +161,9 @@ public class DataAccess {
                 int legajo = rs.getInt(3);
                 String nombreProfesor = rs.getString(4);
                 String apellidoProfesor = rs.getString(5);
-                int documento = rs.getInt(6);
-                Date nacimiento = rs.getDate(7);
-                String email = rs.getString(8);
+                int documento = rs.getInt(7);
+                Date nacimiento = rs.getDate(8);
+                String email = rs.getString(9);
                 
                 Profesor profe = new Profesor(legajo, nombreProfesor, apellidoProfesor, documento, nacimiento, email, "");
                 Materia materia = new Materia(nombreMateria, profe);
@@ -174,6 +172,7 @@ public class DataAccess {
                 lista.add(materia);
             }
         } catch (SQLException e) {
+            String error = e.getMessage();
             System.out.println("Error al cargar materias: " + e.getMessage());
         }
         
@@ -242,7 +241,7 @@ public class DataAccess {
     
     public ArrayList<Recurso> getRecursos(Materia m) {
         ArrayList<Recurso> lista = new ArrayList<>();
-        String sql = "SELECT r.* FROM Recursos r, Materias m WHERE r.materia = m.id AND m.id = @materia";
+        String sql = "SELECT r.* FROM Recursos r, Materias m WHERE r.materia = m.id AND m.id = ?";
         
         try {
             Conectar();
@@ -270,7 +269,7 @@ public class DataAccess {
         ArrayList<Descarga> lista = new ArrayList<>();
         String sql = "SELECT d.fecha, a.nombre FROM Descargas d, Alumnos a, Materias m, Recursos r "
                 + "WHERE a.id = d.alumno AND d.recurso = r.id AND r.materia = m.id "
-                + "AND r.id = @r"; 
+                + "AND r.id = ?"; 
         
         try {
             Conectar();
@@ -303,7 +302,7 @@ public class DataAccess {
         String sql = "SELECT d.fecha, m.nombre AS 'Materia' , r.recurso "
                 + "FROM Descargas d, Alumnos a, Materias m, Recursos r "
                 + "WHERE a.id = d.alumno AND d.recurso = r.id AND r.materia = m.id"
-                + "AND a.id = @id";
+                + "AND a.id = ?";
         
         try {
             Conectar();
@@ -338,7 +337,7 @@ public class DataAccess {
     
     public boolean setAlumno(Alumno a) {
         boolean flag = false;
-        String sql = "INSERT INTO Alumnos VALUES (@legajo, @nombre, @apellido, @tipoDocumento, @numeroDocumento, @fechaNacimiento, @calle, @altura, @codigoPostal, @email, @telefono)";
+        String sql = "INSERT INTO Alumnos VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try {
             Conectar();
@@ -364,7 +363,7 @@ public class DataAccess {
     
     public boolean setMateria(Materia m) {
         boolean flag = false;
-        String sql = "INSERT INTO Materias VALUES (@nombre, @profesor)";
+        String sql = "INSERT INTO Materias VALUES (?, ?)";
         
         try {
             Conectar();
@@ -382,7 +381,7 @@ public class DataAccess {
     
     public boolean setProfesor(Profesor p) {
         boolean flag = false;
-        String sql = "INSERT INTO Profesores VALUES(@legajo, @nombre, @apellido, @tipoDocumento, @documento, @fechaNacimiento, @email";
+        String sql = "INSERT INTO Profesores VALUES(?, ?, ?, ?, ?, ?, ?)";
         
         try {
             Conectar();
@@ -406,7 +405,7 @@ public class DataAccess {
     
     public boolean setInscripcion(Inscripcion i) {
         boolean flag = false;
-        String sql = "INSERT INTO Inscripciones VALUES (@fecha, @materia, @alumno)";
+        String sql = "INSERT INTO Inscripciones VALUES (?, ?, ?)";
         
         try {
             Conectar();
@@ -423,7 +422,7 @@ public class DataAccess {
     
     public boolean setRecurso(Recurso r) {
         boolean flag = false;
-        String sql = "INSERT INTO Recursos VALUES (@fecha, @materia, @recurso)";
+        String sql = "INSERT INTO Recursos VALUES (?, ?, ?)";
         
         try {
             Conectar();
@@ -443,7 +442,7 @@ public class DataAccess {
     
     public boolean setDescarga(Descarga d) {
         boolean flag = false;
-        String sql = "INSERT INTO Descargas VALUES (@fecha, @alumno, @recurso)";
+        String sql = "INSERT INTO Descargas VALUES (?, ?, ?)";
         
         try {
             Conectar();
@@ -490,7 +489,7 @@ public class DataAccess {
     
     public boolean setLogin(Alumno a) { 
         boolean flag = false;
-        String sql = "INSERT INTO Logins VALUES (@alumno, @fecha)";
+        String sql = "INSERT INTO Logins VALUES (?, ?)";
         
         try {
             Conectar();
