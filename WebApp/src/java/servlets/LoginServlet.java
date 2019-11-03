@@ -25,13 +25,15 @@ import models.Profesor;
  *
  * @author IVAN
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/Login"})
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+        rd.forward(request, response);
     }
 
     /**

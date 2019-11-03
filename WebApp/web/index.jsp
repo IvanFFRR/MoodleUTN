@@ -21,7 +21,7 @@
     <body>
         <c:choose>
             <c:when test="${empty user}">
-                    <form method="POST" action="Login">
+                    <form method="POST" action="login">
                         <p></br>
                             <label for="txtUser">Usuario:</label>
                             <input name="txtUser"/>

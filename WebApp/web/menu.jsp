@@ -25,19 +25,29 @@
 
           .topnav a {
             float: right;
-            color: #333333;
+            color: #222222;
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
             font-size: 17px;
           }
           .topnav a.active {
-            background-color: #333333;
-            color: white;
+            background-color: #222222;
+            color: #EEEEEE;
           }
           .topnav a:hover {
               background-color: black;
-              color: #DDDDDD;
+              color: white;
+          }
+          
+          .topnav.logout {
+              background-color: #222222;
+              color: #EEEEEE;
+          }
+          
+          .logout:hover {
+              background-color: black;
+              color: red;
           }
           
 
@@ -54,7 +64,7 @@
                 </c:when>
                 <c:otherwise>
                      <div id="botones" class="botones">
-                          <a href="logout">⏻</a>
+                          <a href="logout" class="logout">⏻</a>
                           <a href="alumno">${user.nombre} ${user.apellido}</a>
                           <a href="materias">Materias</a>
                     </div>                       

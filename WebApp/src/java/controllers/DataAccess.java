@@ -179,9 +179,78 @@ public class DataAccess {
         return lista;
     }
     
+    public ArrayList<Materia> getNoMaterias(Alumno a) {
+        ArrayList<Materia> lista = new ArrayList<>();
+        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email \n" +
+"                    FROM Materias m, Inscripciones i, Alumnos a, Profesores p \n" +
+"                    WHERE m.profesor = p.id AND m.Nombre NOT IN (SELECT m.Nombre FROM Materias m, Inscripciones i, Alumnos a WHERE m.id = i.materia AND i.alumno = a.id AND a.id = ?) \n" +
+"                    GROUP BY m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email";
+        try {
+            Conectar();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setInt(1, a.getId());
+            
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                int idMateria  = rs.getInt(1);
+                String nombreMateria = rs.getString(2);
+                int legajo = rs.getInt(3);
+                String nombreProfesor = rs.getString(4);
+                String apellidoProfesor = rs.getString(5);
+                int documento = rs.getInt(7);
+                Date nacimiento = rs.getDate(8);
+                String email = rs.getString(9);
+                
+                Profesor profe = new Profesor(legajo, nombreProfesor, apellidoProfesor, documento, nacimiento, email, "");
+                Materia materia = new Materia(nombreMateria, profe);
+                materia.setId(idMateria);
+                
+                lista.add(materia);
+            }
+        } catch (SQLException e) {
+            String error = e.getMessage();
+            System.out.println("Error al cargar materias: " + e.getMessage());
+        }
+        
+        return lista;
+    }
+    
+    public Materia getMateria(int i) {
+        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.documento, p.fechaNacimiento, p.email FROM Materias m, Profesores p WHERE m.profesor = p.id AND m.id = ?";
+        
+        try {
+            Conectar();
+            PreparedStatement ps = cnn.prepareStatement(sql);
+            ps.setInt(1, i);
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                int idMateria = rs.getInt(1);
+                String nombreMateria = rs.getString(2);
+                int legajo = rs.getInt(3);
+                String nombreProfe = rs.getString(4);
+                String apellidoProfe = rs.getString(5);
+                int documento = rs.getInt(6);
+                Date nacimiento = rs.getDate(7);
+                String email = rs.getString(8);
+                
+                Profesor p = new Profesor(legajo, nombreProfe, apellidoProfe, documento, nacimiento, email, ""); 
+                //(int legajo, String nombre, String apellido, int documento, Date fechaDeNacimiento, String email, String telefono)
+                Materia m = new Materia(nombreMateria, p);
+                m.setId(idMateria);  
+                return m;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error al cargar una materia i " + e.getMessage());
+        }
+       return null; 
+    }
+    
     public ArrayList<Materia> getMaterias() {
         ArrayList<Materia> lista = new ArrayList<>();
-        String sql = "SELECT m.* FROM Materias m, Profesores p WHERE p.id = m.profesor";
+        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email FROM Materias m, Profesores p WHERE p.id = m.profesor";
         
         try {
             Conectar();
@@ -189,15 +258,20 @@ public class DataAccess {
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()) {
-                Profesor p = new Profesor(); 
-                p.setId(rs.getInt("profesor"));
+                int idMateria  = rs.getInt(1);
+                String nombreMateria = rs.getString(2);
+                int legajo = rs.getInt(3);
+                String nombreProfesor = rs.getString(4);
+                String apellidoProfesor = rs.getString(5);
+                int documento = rs.getInt(7);
+                Date nacimiento = rs.getDate(8);
+                String email = rs.getString(9);
                 
-                Materia m = new Materia(
-                        rs.getString("nombre"),
-                        p
-                );
+                Profesor profe = new Profesor(legajo, nombreProfesor, apellidoProfesor, documento, nacimiento, email, "");
+                Materia materia = new Materia(nombreMateria, profe);
+                materia.setId(idMateria);
                 
-                lista.add(m);
+                lista.add(materia);
             }
         } catch (SQLException e) {
             System.out.println("Error al cargar las materias: " + e.getMessage());
@@ -411,7 +485,7 @@ public class DataAccess {
             Conectar();
             PreparedStatement ps = cnn.prepareStatement(sql);
             ps.setDate(1, i.getFecha());
-            ps.setInt(1, i.getMateria().getId());
+            ps.setInt(2, i.getMateria().getId());
             ps.setInt(3, i.getAlumno().getId());
             flag = ps.execute();
         } catch (SQLException e) {

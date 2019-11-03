@@ -7,7 +7,9 @@ package servlets;
 
 import controllers.DataAccess;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,15 +18,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Alumno;
+import models.Inscripcion;
 import models.Materia;
-import models.Profesor;
 
 /**
  *
  * @author IVAN
  */
-@WebServlet(name = "MateriasServlet", urlPatterns = {"/materias"})
-public class MateriasServlet extends HttpServlet {
+@WebServlet(name = "InscripcionServlet", urlPatterns = {"/inscripcion"})
+public class InscripcionServlet extends HttpServlet {
+
+    
+   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -38,47 +43,26 @@ public class MateriasServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DataAccess data = new DataAccess();
-        ArrayList<Materia> materias = new ArrayList<>();
+        
         HttpSession session = request.getSession();
-        RequestDispatcher rd;
-        String id = request.getParameter("id");
         String persona = (String)session.getAttribute("persona");
-        
-        if(session.getAttribute("user") != null) {
-             if ("alumno".equals(persona)) {
-            Alumno a = (Alumno)session.getAttribute("user");
-            materias = data.getMaterias(a);            
+        DataAccess data = new DataAccess();
+            if("alumno".equals(persona)) {
+                Alumno a = (Alumno)session.getAttribute("user");
+                ArrayList<Materia> noMaterias = data.getNoMaterias(a);
+            
+            session.setAttribute("nomaterias", noMaterias);              
+            request.getRequestDispatcher("inscripcion.jsp").forward(request, response);
+            
+            
             } else {
-            if("profesor".equals(persona)) {
-                Profesor p = (Profesor)session.getAttribute("user");
-                materias = data.getMaterias(p);
-                }
-            }
-        } else {
-               rd = getServletContext().getRequestDispatcher("/login");
-               rd.forward(request, response);
-            }
-              
-        
-        
-        if(id != null) {
-            for (Materia materia : materias) {
-                if(Integer.parseInt(id) == materia.getId()) {
-                    ArrayList<Alumno> alumnos = data.getAlumnos(materia);
-                    session.setAttribute("alumnos", alumnos);                                        
-                    session.setAttribute("materia", materia);
-                    rd = getServletContext().getRequestDispatcher("/materia.jsp");
+                if("profesor".equals(persona)) {
+                    
+                } else {
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
                     rd.forward(request, response);
-                    break;
                 }
-            }
-        }
-        
-        request.setAttribute("materias", materias);
-
-        rd = getServletContext().getRequestDispatcher("/materias.jsp");
-        rd.forward(request, response);
+            }       
     }
 
     /**
@@ -92,8 +76,27 @@ public class MateriasServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                
+                    
+        HttpSession session = request.getSession();
+        DataAccess data = new DataAccess();
+        try {
+            String[] input = request.getParameterValues("chkMaterias");
+            int[] materias = new int[input.length];
+
+            for (int i = 0; i < materias.length; i++) {
+                materias[i] = Integer.parseInt(input[i]);
+            }
+
+            for (int i : materias) {
+                Materia m = data.getMateria(i);
+                Inscripcion insc = new Inscripcion(new java.sql.Date(Calendar.getInstance().getTime().getTime()), m, (Alumno) session.getAttribute("user"));
+                data.setInscripcion(insc);
+            }
+        } catch (Exception e) {
+            
+        }
         
+        response.sendRedirect(request.getContextPath() + "/materias");
     }
 
     /**

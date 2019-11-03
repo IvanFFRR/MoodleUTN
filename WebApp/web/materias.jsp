@@ -30,5 +30,10 @@
                 </tr>
                 </c:forEach>
           </table>
+        
+        <form method="GET" action="inscripcion">
+                        <input type="submit" value="Inscribirse a otras materias"> 
+        </form>
+        
     </body>
 </html>
