@@ -26,6 +26,11 @@
         <form method="POST">
             <table>
                 <tr>
+                    <c:choose>
+                        <c:when test="${empty nomaterias}">
+                           Ya estás inscrito a todas las materias. 
+                        </c:when>
+                        <c:otherwise>                            
                     <th><u data-toggle="tooltip" title="Tilde la caja junto a la materia a la que quiera inscribirse">?</u></th>
                     <th>Materia</th>
                     <th>Profesor</th>
@@ -40,5 +45,7 @@
             </table>                
             <input type="Submit" value="Inscribirse">
         </form>
+                        </c:otherwise>
+                    </c:choose>
     </body>
 </html>

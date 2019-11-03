@@ -48,18 +48,22 @@ public class MateriasServlet extends HttpServlet {
         if(session.getAttribute("user") != null) {
              if ("alumno".equals(persona)) {
             Alumno a = (Alumno)session.getAttribute("user");
-            materias = data.getMaterias(a);            
+            materias = data.getMaterias(a);  
+            session.setAttribute("materias", materias);
+            
+            
             } else {
             if("profesor".equals(persona)) {
                 Profesor p = (Profesor)session.getAttribute("user");
                 materias = data.getMaterias(p);
+                session.setAttribute("materias", materias);
+                
                 }
             }
         } else {
                rd = getServletContext().getRequestDispatcher("/login");
                rd.forward(request, response);
             }
-              
         
         
         if(id != null) {
@@ -74,9 +78,6 @@ public class MateriasServlet extends HttpServlet {
                 }
             }
         }
-        
-        request.setAttribute("materias", materias);
-
         rd = getServletContext().getRequestDispatcher("/materias.jsp");
         rd.forward(request, response);
     }

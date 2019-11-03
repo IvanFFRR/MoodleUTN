@@ -50,28 +50,47 @@
               color: red;
           }
           
-
+          footer {
+              position: fixed;
+              left: 0;
+              bottom: 0;
+              width: 100%;
+              background-color: #222222;
+              color: #AAAAAA;
+              text-align: center;
+              padding: 10px;
+              font-size: 8pt;
+          }
         </style>
         
     </head>
     <body>
         
-        <div class="topnav"> 
-            <b class="title">Universidad Virtual UTN</b>
-                <c:choose>
-                <c:when test="${empty user}">
-                    <a class="active" href="login" style="float: right">Iniciar Sesión</a>
-                </c:when>
-                <c:otherwise>
-                     <div id="botones" class="botones">
-                          <a href="logout" class="logout">⏻</a>
-                          <a href="alumno">${user.nombre} ${user.apellido}</a>
-                          <a href="materias">Materias</a>
-                    </div>                       
-                </c:otherwise>
-            </c:choose>
+            <div class="topnav"> 
+                <header>                    
+                <b class="title">Universidad Virtual UTN</b>
+                    <c:choose>
+                    <c:when test="${empty user}">
+                        <a class="active" href="login" style="float: right">Iniciar Sesión</a>
+                    </c:when>
+                    <c:otherwise>
+                         <div id="botones" class="botones">
+                              <a href="logout" class="logout">⏻</a>
+                              <a href="alumno">${user.nombre} ${user.apellido}</a>
+                              <a href="inscripcion">Inscripciones</a>
+                              <a href="materias">Materias</a>
+                        </div>                       
+                    </c:otherwise>
+                </c:choose>
+                </header> 
+            </div>
+     
+            <footer>
+                Trabajo Práctico Integrador - Laboratorio IV <br>
+                Iván Facundo Rosas - 109780 - 2W2 <br>
+                Universidad Tecnológica Nacional                
+            </footer>
         
         
-        </div>
     </body>
 </html>

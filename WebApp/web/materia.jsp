@@ -33,15 +33,29 @@
         </c:forEach>        
     </table>
     
-  
+    <c:choose>
+        <c:when test="${persona} == 'alumno'">
         <c:if test="${match == true}">
             <p> Ya estás inscrito a esta materia</p>
+            <div class="recursos" style="float: right">
+                <%--
+                    <jsp:include page="recursos.jsp"></jsp:include>
+                --%>
+            </div>
         </c:if>
             <c:if test="${match == false}">
                 <form method="POST" action="materias">
                         <input type="submit" value="Inscribirse a esta materia"> 
                 </form>
             </c:if>
-
+        </c:when>
+        <c:otherwise>
+            <c:if test="${user.id} == ${materia.profesor.id}">
+                <form method="POST" action="recursos">
+                    
+                </form>
+            </c:if>
+        </c:otherwise>
+    </c:choose>
     </body>
 </html>
