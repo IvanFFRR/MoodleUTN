@@ -12,6 +12,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>${materia.nombre}</title>
         <jsp:include page="menu.jsp"></jsp:include>
+        <script>
+            $(document).ready(function(){
+              $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
     </head>
     <body>
         <h1>${materia.nombre}</h1>
@@ -34,13 +39,13 @@
     </table>
     
     <c:choose>
-        <c:when test="${persona} == 'alumno'">
+        <c:when test="${persona == 'alumno'}">
         <c:if test="${match == true}">
             <p> Ya estás inscrito a esta materia</p>
-            <div class="recursos" style="float: right">
-                <%--
-                    <jsp:include page="recursos.jsp"></jsp:include>
-                --%>
+            <div class="recursos">
+                
+                <jsp:include page="recursos.jsp"></jsp:include>
+               
             </div>
         </c:if>
             <c:if test="${match == false}">
@@ -50,9 +55,13 @@
             </c:if>
         </c:when>
         <c:otherwise>
-            <c:if test="${user.id} == ${materia.profesor.id}">
+            <c:if test="${user.id == materia.profesor.id}">
+                Eres profesor de esta materia.<br />
+                <h2>Subir recurso a esta materia</h2>
                 <form method="POST" action="recursos">
-                    
+                    <input type="file" name="archivo">
+                    <label data-toggle="tooltip" title="Si el recurso es privado, sólo los alumnos registrados pueden verlo y descargarlo. (Destildar para hacerlo público)"><input type="checkbox" name="esPrivado" checked> ¿Recurso privado? </label>
+                    <input type="submit" value="Subir">
                 </form>
             </c:if>
         </c:otherwise>

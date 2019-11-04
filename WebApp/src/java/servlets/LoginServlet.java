@@ -60,6 +60,7 @@ public class LoginServlet extends HttpServlet {
                 if (user.equals(Integer.toString(a.getLegajo())) && pass.equals(Integer.toString(a.getDocumento()))) {
                     session.setAttribute("user", a);
                     session.setAttribute("persona", persona);
+                    data.setLogin(a); //agrega un registro al historial de inicios de sesión
                     break;
                 }
             }
@@ -68,9 +69,9 @@ public class LoginServlet extends HttpServlet {
                 ArrayList<Profesor> profesores = data.getProfesores();
                 for (Profesor p : profesores) {
                     if (user.equals(Integer.toString(p.getLegajo())) && pass.equals(Integer.toString(p.getDocumento()))) {
-                        String nombreUsuario = String.format("%s %s", p.getNombre(), p.getApellido());
                         session.setAttribute("persona", persona);
                         session.setAttribute("user", p);
+                        data.setLogin(p);
                         break;
                     }
                 }

@@ -15,13 +15,23 @@ public class Recurso {
     Date fecha;
     Materia materia;
     String ruta;
+    boolean esPrivado;
+
+    public boolean esPrivado() {
+        return esPrivado;
+    }
+
+    public void setPrivacidad(boolean esPrivado) {
+        this.esPrivado = esPrivado;
+    }
     
     public Recurso() {}
     
-    public Recurso(Date fecha, Materia m, String ruta) {
+    public Recurso(Date fecha, Materia m, String ruta, boolean p) {
         this.fecha = fecha;
         this.materia = m;
         this.ruta = ruta;
+        this.esPrivado = p;
     }
     
     @Override

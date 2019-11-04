@@ -31,6 +31,12 @@
             text-decoration: none;
             font-size: 17px;
           }
+          
+          .logout:hover {
+              background-color: black;
+              color: red;
+          }
+          
           .topnav a.active {
             background-color: #222222;
             color: #EEEEEE;
@@ -44,11 +50,7 @@
               background-color: #222222;
               color: #EEEEEE;
           }
-          
-          .logout:hover {
-              background-color: black;
-              color: red;
-          }
+      
           
           footer {
               position: fixed;
@@ -71,7 +73,8 @@
                 <b class="title">Universidad Virtual UTN</b>
                     <c:choose>
                     <c:when test="${empty user}">
-                        <a class="active" href="login" style="float: right">Iniciar Sesión</a>
+                        <a class="active" href="login">Iniciar Sesión</a>
+                        <a href="recursos">Recursos públicos</a>
                     </c:when>
                     <c:otherwise>
                          <div id="botones" class="botones">

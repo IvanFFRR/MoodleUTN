@@ -298,13 +298,14 @@ public class DataAccess {
                         rs.getInt("documento"),
                         rs.getDate("fechaNacimiento"),
                         rs.getString("email"),
-                        rs.getString("telefono")
+                        ""
                 );
                 p.setId(rs.getInt("id"));
                 
                 lista.add(p);
             }
         } catch (SQLException e) {
+            String error = e.getMessage();
             System.out.println("Error al cargar los profesores: " + e.getMessage());
         } finally {
             Desconectar();
@@ -327,8 +328,10 @@ public class DataAccess {
                 Recurso r = new Recurso(
                         rs.getDate("fecha"),
                         m,
-                        rs.getString("recurso")
+                        rs.getString("recurso"),
+                        rs.getBoolean("esPrivado")
                 );
+                r.setId(rs.getInt("id"));
                 lista.add(r);
             }
         } catch (SQLException e) {
@@ -561,15 +564,21 @@ public class DataAccess {
         return lista;
     } //obtiene una lista de todas las credenciales registradas
     
-    public boolean setLogin(Alumno a) { 
+    public boolean setLogin(Object o) { 
         boolean flag = false;
         String sql = "INSERT INTO Logins VALUES (?, ?)";
         
         try {
             Conectar();
             PreparedStatement ps = cnn.prepareStatement(sql);
-            ps.setInt(1, a.getId());
-            ps.setDate(1, (java.sql.Date)Calendar.getInstance().getTime());
+            if (o instanceof Alumno) {
+                ps.setInt(1,((Alumno) o).getId());
+            } else {
+                if (o instanceof Profesor) {
+                    ps.setInt(1,((Profesor) o).getId());
+                }
+            }
+            ps.setDate(1, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
             flag = ps.execute();
         } catch (SQLException e) {
             System.out.println("Error al crear un registro en el historial de logins: " + e.getMessage());
