@@ -6,28 +6,34 @@
 package servlets;
 
 import controllers.DataAccess;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import models.Materia;
-import models.Recurso;
+import models.Alumno;
+import models.Profesor;
 
 /**
  *
- * @author IVAN
+ * @author ALUMNO
  */
-@WebServlet(name = "DescargasServlet", urlPatterns = {"/descargas"})
-public class DescargasServlet extends HttpServlet {
+@WebServlet(name = "PerfilServlet", urlPatterns = {"/perfil"})
+public class PerfilServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -42,43 +48,27 @@ public class DescargasServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        boolean logged = session.getAttribute("user") != null;
         DataAccess data = new DataAccess();
-        String id = request.getParameter("id");
+        String perfil = request.getParameter("p");
+        int id = Integer.parseInt(request.getParameter("id"));
         
-        
-        if(id != null && !id.isEmpty()) {
-            for(Recurso recurso : data.getRecursos((Materia)session.getAttribute("materia"))) {
-                if (recurso.getId() == Integer.parseInt(id)) {
-                    if (logged || !logged && !recurso.esPrivado()) {
-                        String path = recurso.getRuta();
-                        File archivo = new File(path);
-                        response.setContentType("application/octet-stream");
-                        response.setHeader("Content-disposition","attachment; filename= " + path);
-                        
-                        try {
-                            OutputStream out = response.getOutputStream();
-                            FileInputStream in = new FileInputStream(archivo);
-                            byte[] buffer = new byte[4096];
-                            int length;
-                            while ((length = in.read(buffer)) > 0){
-                               out.write(buffer, 0, length);
+        if(perfil.equals("a")) {
+            for (Alumno a : data.getAlumnos()) {
+                if (a.getId() == id) {
+                    session.setAttribute("perfil", a);
+                } else {
+                    if(perfil.equals("p")) {
+                        for (Profesor p : data.getProfesores()) {
+                            if (p.getId() == id) {
+                                session.setAttribute("perfil", p);
                             }
-                            in.close();
-                            out.flush();
-                            
-                            
-                            
-                        } catch (IOException e) {
-                            String error = e.getMessage();
-                            System.out.println("Error al descargar un archivo: ERROR: " + error);
                         }
-                        
-                        
                     }
                 }
-            }
-        }     
+            } 
+        }
+        
+        
     }
 
     /**
@@ -104,5 +94,5 @@ public class DescargasServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
 }

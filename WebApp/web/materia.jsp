@@ -20,7 +20,7 @@
     </head>
     <body>
         <h1>${materia.nombre}</h1>
-    <b>Profesor:</b> <a href="profesor?id=${materia.profesor.id}">${materia.profesor.apellido}, ${materia.profesor.nombre}</a>
+    <b>Profesor:</b> <a href="perfil?p=p&id=${materia.profesor.id}">${materia.profesor.apellido}, ${materia.profesor.nombre}</a>
     
     
     <p>Alumnos inscritos a esta materia: </p>
@@ -30,7 +30,7 @@
         <c:forEach items="${alumnos}" var="a">
             <tr>
                 <td>${a.legajo}</td>
-                <td>${a.apellido}, ${a.nombre}</td>
+                <td><a href="perfil?p=a&id=${a.id}">${a.apellido}, ${a.nombre}</a></td>
                 <c:if test = "${a.legajo == user.legajo}">
                 <c:set var="match" value="true"/>
                 </c:if>

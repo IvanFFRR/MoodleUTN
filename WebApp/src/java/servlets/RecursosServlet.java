@@ -70,12 +70,8 @@ public class RecursosServlet extends HttpServlet {
             String fileName = getFileName(part);
             if (!fileName.isEmpty()) {
                 part.write(fileName);
-                String checked = request.getParameter("esPrivado");
-                Boolean privado = true;
+                Boolean privado = request.getParameter("esPrivado") != null;
                 
-                if(checked != null) {
-                    privado = false;
-                }
                 Materia materia = (Materia)session.getAttribute("materia");
                 Date ahora = new java.sql.Date(Calendar.getInstance().getTime().getTime());
                 Recurso r = new Recurso(ahora, materia, fileName, privado);

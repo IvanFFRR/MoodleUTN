@@ -26,7 +26,7 @@
                 <c:forEach items="${materias}" var="m">
                 <tr>
                     <td><a href="materias?id=${m.id}">${m.nombre}</a></td>
-                    <td><a href="profesor?id=${m.profesor.id}">${m.profesor.apellido}, ${m.profesor.nombre}</a></td>
+                    <td><a href="perfil?p=p&id=${m.profesor.id}">${m.profesor.apellido}, ${m.profesor.nombre}</a></td>
                 </tr>
                 </c:forEach>
           </table>
