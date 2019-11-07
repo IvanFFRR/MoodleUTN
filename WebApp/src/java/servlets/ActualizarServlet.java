@@ -7,6 +7,11 @@ package servlets;
 
 import controllers.DataAccess;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -61,22 +66,22 @@ public class ActualizarServlet extends HttpServlet {
        
          DataAccess data = new DataAccess();
          
-       java.sql.Date nacimiento = (java.sql.Date)request.getAttribute("dNacimiento");      
-       String email = (String)request.getAttribute("email");
-       String telefono = (String)request.getAttribute("txtTelefono");
+       String nacimiento = request.getParameter("dNacimiento");
+       String email = (String)request.getParameter("email");
+       String telefono = (String)request.getParameter("txtTelefono");
        
         if(request.getSession().getAttribute("persona").equals("alumno")) {
            Alumno a = (Alumno)request.getSession().getAttribute("user");   
            
-           String calle = (String)request.getAttribute("txtCalle");
-           String altura = (String)request.getAttribute("nmbAltura");
-           String codigoPostal = (String)request.getAttribute("nmbCP");
+           String calle = (String)request.getParameter("txtCalle");
+           String altura = (String)request.getParameter("nmbAltura");
+           String codigoPostal = (String)request.getParameter("nmbCP");
            
            //código hediondo, usar HashMap o TupleList?
            if(calle!=null & !calle.isEmpty())
             a.setCalle(calle);
            if(nacimiento!=null)
-            a.setFechaDeNacimiento(nacimiento);
+            a.setFechaDeNacimiento(java.sql.Date.valueOf(nacimiento));
            if(altura!=null & !altura.isEmpty())
             a.setAltura(Integer.parseInt(altura));
            if(codigoPostal!=null & !codigoPostal.isEmpty())
@@ -93,8 +98,8 @@ public class ActualizarServlet extends HttpServlet {
             if(request.getSession().getAttribute("persona").equals("profesor")) {
                 Profesor a = (Profesor)request.getSession().getAttribute("user");
 
-                if(nacimiento!=null)
-                 a.setFechaDeNacimiento(nacimiento);
+                if(nacimiento!=null) {
+                a.setFechaDeNacimiento(java.sql.Date.valueOf(nacimiento));
                 if(email!=null & !email.isEmpty())
                  a.setEmail(email);
                 if(telefono!=null & !telefono.isEmpty())
@@ -105,7 +110,7 @@ public class ActualizarServlet extends HttpServlet {
             }
         }
             
-        
+        }
        
     }
 
