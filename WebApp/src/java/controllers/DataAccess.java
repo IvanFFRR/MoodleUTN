@@ -584,7 +584,7 @@ public class DataAccess {
                     ps.setInt(1,((Profesor) o).getId());
                 }
             }
-            ps.setDate(1, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+            ps.setDate(2, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
             flag = ps.execute();
         } catch (SQLException e) {
             System.out.println("Error al crear un registro en el historial de logins: " + e.getMessage());
@@ -595,4 +595,36 @@ public class DataAccess {
         
         return flag;
     } //ingresa un registro en el historial de sesiones iniciadas
+    
+    public void updatePersona(Object o) {
+        String sql;
+        try {
+            Conectar();
+            
+            if(o instanceof Alumno) {
+                sql = "UPDATE Alumnos SET fechaNacimiento = ?, calle = ?, altura = ?, codigoPostal = ?, email = ?, telefono = ? WHERE id = ?";
+                PreparedStatement ps = cnn.prepareStatement(sql);
+                ps.setDate(1, ((Alumno) o).getFechaDeNacimiento());
+                ps.setString(2, ((Alumno) o).getCalle());
+                ps.setInt(3, ((Alumno) o).getAltura());
+                ps.setInt(4, ((Alumno) o).getCodigoPostal());
+                ps.setString(5, ((Alumno) o).getEmail());
+                ps.setString(6, ((Alumno) o).getTelefono());
+                ps.execute();
+            } 
+            if (o instanceof Profesor)  {
+                sql = "UPDATE Profesores SET fechaNacimiento = ?, email = ?, telefono = ? WHERE id = ?";
+                PreparedStatement ps = cnn.prepareStatement(sql);
+                ps.setDate(1, ((Profesor) o).getFechaDeNacimiento());
+                ps.setString(2, ((Profesor) o).getEmail());
+                ps.setString(3, ((Profesor) o).getTelefono());
+                ps.execute();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("ERROR al actualizar una persona" + e.getMessage());
+        } finally {
+            Desconectar();
+        }
+    }
 }

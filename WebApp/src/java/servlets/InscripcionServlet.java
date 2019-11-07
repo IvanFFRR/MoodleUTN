@@ -44,6 +44,10 @@ public class InscripcionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        if(request.getSession().getAttribute("user") == null) {
+            getServletContext().getRequestDispatcher("/login").forward(request, response);
+        }        
+        
         HttpSession session = request.getSession();
         String persona = (String)session.getAttribute("persona");
         DataAccess data = new DataAccess();
@@ -77,6 +81,10 @@ public class InscripcionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
                     
+        if(request.getSession().getAttribute("user") == null) {
+            getServletContext().getRequestDispatcher("/login").forward(request, response);
+        }
+        
         HttpSession session = request.getSession();
         DataAccess data = new DataAccess();
         try {
@@ -92,7 +100,7 @@ public class InscripcionServlet extends HttpServlet {
                 Inscripcion insc = new Inscripcion(new java.sql.Date(Calendar.getInstance().getTime().getTime()), m, (Alumno) session.getAttribute("user"));
                 data.setInscripcion(insc);
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             
         }
         

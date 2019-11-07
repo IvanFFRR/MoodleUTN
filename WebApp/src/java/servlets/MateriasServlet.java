@@ -38,6 +38,11 @@ public class MateriasServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        if(request.getSession().getAttribute("user") == null) {
+            getServletContext().getRequestDispatcher("/login").forward(request, response);
+        }
+        
         DataAccess data = new DataAccess();
         ArrayList<Materia> materias = new ArrayList<>();
         HttpSession session = request.getSession();

@@ -80,7 +80,9 @@
                          <div id="botones" class="botones">
                               <a href="logout" class="logout">⏻</a>
                               <a href="perfil?pers=${persona}&id=${user.id}">${user.nombre} ${user.apellido}</a>
-                              <a href="inscripcion">Inscripciones</a>
+                              <c:if test="${persona == 'alumno'}">                                  
+                                <a href="inscripcion">Inscripciones</a>
+                              </c:if>
                               <a href="materias">Materias</a>
                         </div>                       
                     </c:otherwise>

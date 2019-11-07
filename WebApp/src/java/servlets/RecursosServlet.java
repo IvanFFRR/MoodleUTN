@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import models.Recurso;
  *
  * @author IVAN
  */
+@MultipartConfig
 @WebServlet(name = "RecursosServlet", urlPatterns = {"/recursos"})
 public class RecursosServlet extends HttpServlet {
 
@@ -42,6 +44,11 @@ public class RecursosServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        if(request.getSession().getAttribute("user") == null) {
+            getServletContext().getRequestDispatcher("/login").forward(request, response);
+        }
+        
         HttpSession session = request.getSession();
         DataAccess data = new DataAccess();
         Materia materia = (Materia)session.getAttribute("materia");
@@ -64,6 +71,11 @@ public class RecursosServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        if(request.getSession().getAttribute("user") == null) {
+            getServletContext().getRequestDispatcher("/login").forward(request, response);
+        }
+        
         HttpSession session = request.getSession();
         DataAccess data = new DataAccess();
         for (Part part : request.getParts()) {

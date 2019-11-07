@@ -52,7 +52,7 @@
                     </tr>
                     <c:if test="${persona == 'alumno'}"> 
                         <tr>
-                            <th>Dirección</th> <td>${user.calle} ${puser.altura} - ${user.codigoPostal}</td>
+                            <th>Dirección</th> <td>${user.calle} ${user.altura} - ${user.codigoPostal}</td>
                         </tr>
                     </c:if>
                         <tr>

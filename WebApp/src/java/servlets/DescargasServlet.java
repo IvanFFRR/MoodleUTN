@@ -41,6 +41,11 @@ public class DescargasServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        if(request.getSession().getAttribute("user") == null) {
+            getServletContext().getRequestDispatcher("/login").forward(request, response);
+        }
+        
         HttpSession session = request.getSession();
         boolean logged = session.getAttribute("user") != null;
         DataAccess data = new DataAccess();

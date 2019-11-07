@@ -58,7 +58,7 @@
             <c:if test="${user.id == materia.profesor.id}">
                 Eres profesor de esta materia.<br />
                 <h2>Subir recurso a esta materia</h2>
-                <form method="POST" action="recursos">
+                <form method="POST" action="recursos" enctype="multipart/form-data">
                     <input type="file" name="archivo">
                     <label data-toggle="tooltip" title="Si el recurso es privado, sólo los alumnos registrados pueden verlo y descargarlo. (Destildar para hacerlo público)"><input type="checkbox" name="esPrivado" checked> ¿Recurso privado? </label>
                     <input type="submit" value="Subir">
