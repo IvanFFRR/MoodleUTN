@@ -79,7 +79,7 @@
                     <c:otherwise>
                          <div id="botones" class="botones">
                               <a href="logout" class="logout">⏻</a>
-                              <a href="alumno">${user.nombre} ${user.apellido}</a>
+                              <a href="perfil?pers=${persona}&id=${user.id}">${user.nombre} ${user.apellido}</a>
                               <a href="inscripcion">Inscripciones</a>
                               <a href="materias">Materias</a>
                         </div>                       

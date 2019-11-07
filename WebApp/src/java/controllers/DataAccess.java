@@ -147,7 +147,7 @@ public class DataAccess {
     
     public ArrayList<Materia> getMaterias(Alumno a) {
         ArrayList<Materia> lista = new ArrayList<>();
-        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email FROM Materias m, Alumnos a, Inscripciones i, Profesores p WHERE m.profesor = p.id AND a.id = i.alumno AND m.id = i.materia AND a.id = ?";        
+        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email, p.id FROM Materias m, Alumnos a, Inscripciones i, Profesores p WHERE m.profesor = p.id AND a.id = i.alumno AND m.id = i.materia AND a.id = ?";        
         try {
             Conectar();
             PreparedStatement ps = cnn.prepareStatement(sql);
@@ -164,8 +164,10 @@ public class DataAccess {
                 int documento = rs.getInt(7);
                 Date nacimiento = rs.getDate(8);
                 String email = rs.getString(9);
+                int idProfesor = rs.getInt(10);
                 
                 Profesor profe = new Profesor(legajo, nombreProfesor, apellidoProfesor, documento, nacimiento, email, "");
+                profe.setId(idProfesor);
                 Materia materia = new Materia(nombreMateria, profe);
                 materia.setId(idMateria);
                 
@@ -217,7 +219,7 @@ public class DataAccess {
     }
     
     public Materia getMateria(int i) {
-        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.documento, p.fechaNacimiento, p.email FROM Materias m, Profesores p WHERE m.profesor = p.id AND m.id = ?";
+        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.documento, p.fechaNacimiento, p.email, p.id FROM Materias m, Profesores p WHERE m.profesor = p.id AND m.id = ?";
         
         try {
             Conectar();
@@ -234,8 +236,10 @@ public class DataAccess {
                 int documento = rs.getInt(6);
                 Date nacimiento = rs.getDate(7);
                 String email = rs.getString(8);
+                int idProfesor = rs.getInt(9);
                 
                 Profesor p = new Profesor(legajo, nombreProfe, apellidoProfe, documento, nacimiento, email, ""); 
+                p.setId(idProfesor);
                 //(int legajo, String nombre, String apellido, int documento, Date fechaDeNacimiento, String email, String telefono)
                 Materia m = new Materia(nombreMateria, p);
                 m.setId(idMateria);  
@@ -250,7 +254,7 @@ public class DataAccess {
     
     public ArrayList<Materia> getMaterias() {
         ArrayList<Materia> lista = new ArrayList<>();
-        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email FROM Materias m, Profesores p WHERE p.id = m.profesor";
+        String sql = "SELECT m.id, m.nombre, p.legajo, p.nombre, p.apellido, p.tipoDocumento, p.documento, p.fechaNacimiento, p.email, p.id FROM Materias m, Profesores p WHERE p.id = m.profesor";
         
         try {
             Conectar();
@@ -266,8 +270,10 @@ public class DataAccess {
                 int documento = rs.getInt(7);
                 Date nacimiento = rs.getDate(8);
                 String email = rs.getString(9);
+                int idProfesor = rs.getInt(10);
                 
                 Profesor profe = new Profesor(legajo, nombreProfesor, apellidoProfesor, documento, nacimiento, email, "");
+                profe.setId(idProfesor);
                 Materia materia = new Materia(nombreMateria, profe);
                 materia.setId(idMateria);
                 
@@ -300,7 +306,7 @@ public class DataAccess {
                         rs.getString("email"),
                         ""
                 );
-                p.setId(rs.getInt("id"));
+                p.setId(rs.getInt(1));
                 
                 lista.add(p);
             }

@@ -30,7 +30,7 @@
         <c:forEach items="${alumnos}" var="a">
             <tr>
                 <td>${a.legajo}</td>
-                <td><a href="perfil?p=a&id=${a.id}">${a.apellido}, ${a.nombre}</a></td>
+                <td><a href="perfil?pers=alumno&id=${a.id}">${a.apellido}, ${a.nombre}</a></td>
                 <c:if test = "${a.legajo == user.legajo}">
                 <c:set var="match" value="true"/>
                 </c:if>
