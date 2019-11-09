@@ -47,7 +47,7 @@
                         
                     </form> 
                     <p>
-                            ¿No tienes una cuenta? <a href="registro">Crea una</a>
+                        ¿No tienes una cuenta? <a href="registro">Crea una</a> o <a href="login?pers=inv">entra como invitado</a>.
                     </p>
             </c:when>
             <c:otherwise>

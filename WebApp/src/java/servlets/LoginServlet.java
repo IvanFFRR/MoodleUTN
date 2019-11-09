@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Alumno;
+import models.Invitado;
 import models.Profesor;
 
 /**
@@ -30,8 +31,26 @@ public class LoginServlet extends HttpServlet {
         
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {     
         request.getSession().invalidate();
+        
+        String param = request.getParameter("pers");
+        
+        try {
+            if (param.equals("inv")) {
+                Invitado inv = new Invitado();
+                HttpSession session = request.getSession();
+
+                session.setAttribute("user", inv);
+                session.setAttribute("persona", "invitado");
+            }
+        } catch (Exception e) {
+            request.getSession().invalidate();
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+            rd.forward(request, response);
+        }
+        
+       
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
     }

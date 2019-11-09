@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html;" charset=UTF-8">
         <style>
             .topnav {
             margin: 0;
@@ -72,7 +72,7 @@
                 <header>                    
                 <b class="title">Universidad Virtual UTN</b>
                     <c:choose>
-                    <c:when test="${empty user}">
+                    <c:when test="${empty user || persona == 'invitado'}">
                         <a class="active" href="login">Iniciar Sesión</a>
                         <a href="recursos">Recursos públicos</a>
                     </c:when>

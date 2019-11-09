@@ -347,6 +347,29 @@ public class DataAccess {
         }
         return lista;
     } //obtiene todos los recursos de una materia
+    
+    public ArrayList<Recurso> getRecursosPublicos() {
+        ArrayList<Recurso> lista = new ArrayList<>();
+        String sql = "SELECT r.fecha, r.recurso, m.nombre FROM Recursos r, Materias m WHERE m.id = r.materia AND r.esPrivado = 0";
+        
+        try {
+            Conectar();
+            Statement st = cnn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()) {
+                Materia m = new Materia(rs.getString(3), null);
+                
+                Recurso r = new Recurso(rs.getDate(1), m, rs.getString(2), false);
+                                 
+                lista.add(r);
+           }
+            
+        } catch (SQLException e) {
+            System.out.println("Error al cargar recursos públicos. ERROR: " + e.getMessage());
+        }
+        return lista;
+    }
         
     public ArrayList<Descarga> getDescargas(Recurso r) {
         ArrayList<Descarga> lista = new ArrayList<>();

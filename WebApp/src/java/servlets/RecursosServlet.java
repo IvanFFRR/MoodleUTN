@@ -46,17 +46,24 @@ public class RecursosServlet extends HttpServlet {
             throws ServletException, IOException {
         
         if(request.getSession().getAttribute("user") == null) {
-            getServletContext().getRequestDispatcher("/login").forward(request, response);
+            response.sendRedirect("login");
         }
         
-        HttpSession session = request.getSession();
-        DataAccess data = new DataAccess();
-        Materia materia = (Materia)session.getAttribute("materia");
-        
-       
-        ArrayList<Recurso> recursos = data.getRecursos(materia);
-        session.setAttribute("recursos", recursos);
-        getServletContext().getRequestDispatcher("/recursos.jsp").forward(request, response);
+            DataAccess data = new DataAccess();
+            ArrayList<Recurso> recursos = new ArrayList<>();
+        if(!request.getSession().getAttribute("persona").equals("invitado")) { 
+            HttpSession session = request.getSession();
+            Materia materia = (Materia)session.getAttribute("materia");
+
+            recursos = data.getRecursos(materia);
+            session.setAttribute("recursos", recursos);
+            getServletContext().getRequestDispatcher("/recursos.jsp").forward(request, response);
+            
+        } else {
+            recursos = data.getRecursosPublicos();
+            getServletContext().setAttribute("recurosPublicos", recursos);
+            getServletContext().getRequestDispatcher("/publicos.jsp").forward(request, response);
+        }
        
     }
 
