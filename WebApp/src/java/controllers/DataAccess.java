@@ -420,7 +420,7 @@ public class DataAccess {
     
     public boolean setAlumno(Alumno a) {
         boolean flag = false;
-        String sql = "INSERT INTO Alumnos VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Alumnos VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try {
             Conectar();
@@ -464,7 +464,7 @@ public class DataAccess {
     
     public boolean setProfesor(Profesor p) {
         boolean flag = false;
-        String sql = "INSERT INTO Profesores VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Profesores VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         
         try {
             Conectar();
@@ -476,6 +476,7 @@ public class DataAccess {
             ps.setInt(5, p.getDocumento());
             ps.setDate(6, p.getFechaDeNacimiento());
             ps.setString(7, p.getEmail());
+            ps.setString(8, p.getTelefono());
             flag = ps.execute();
             
         } catch (SQLException e) {
@@ -610,6 +611,7 @@ public class DataAccess {
                 ps.setInt(4, ((Alumno) o).getCodigoPostal());
                 ps.setString(5, ((Alumno) o).getEmail());
                 ps.setString(6, ((Alumno) o).getTelefono());
+                ps.setInt(7, ((Alumno) o).getId());
                 ps.execute();
             } 
             if (o instanceof Profesor)  {
@@ -626,5 +628,30 @@ public class DataAccess {
         } finally {
             Desconectar();
         }
+    }
+    
+    public ArrayList<TiposDocumento> getTiposDocumento() {
+        ArrayList<TiposDocumento> list = new ArrayList<>();
+        String sql = "SELECT * FROM TiposDocumento";
+        
+        try {
+            Conectar();
+            Statement st = cnn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()) 
+            {
+                int id = rs.getInt(1);
+                String tipo = rs.getString(2);
+                TiposDocumento td = new TiposDocumento(id, tipo);
+                list.add(td);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            Desconectar();
+        }
+        
+        return list;
     }
 }

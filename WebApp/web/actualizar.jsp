@@ -54,7 +54,7 @@
                     <c:if test="${persona == 'alumno'}"> 
                         <tr>
                             <th>Dirección</th> 
-                            <td>Calle: <input type="text" name="txtCalle" value="${user.calle}"> Altura <input type="number" name="nmbAltura" value="${user.altura}"> CP: <input type="number name="nmbCP" value="${user.codigoPostal}"></td>
+                            <td>Calle: <input type="text" name="txtCalle" value="${user.calle}"> Altura <input type="number" name="nmbAltura" value="${user.altura}"> CP: <input type="number" name="nmbCP" value="${user.codigoPostal}"></td>
                         </tr>
                     </c:if>
                         <tr>
@@ -66,7 +66,7 @@
                     </tr>  
                     
             </table>
-                    <input type="submit" name="btnSubmit" value="Modificar">
+            <input type="submit" class="button" value="Modificar">
         </form>
     </body>
 </html>

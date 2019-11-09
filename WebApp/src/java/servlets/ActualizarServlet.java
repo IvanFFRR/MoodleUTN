@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -60,15 +61,15 @@ public class ActualizarServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-         if(request.getSession().getAttribute("user") == null) {
+        if(request.getSession().getAttribute("user") == null) {
             getServletContext().getRequestDispatcher("/login").forward(request, response);
         }
        
          DataAccess data = new DataAccess();
          
-       String nacimiento = request.getParameter("dNacimiento");
-       String email = (String)request.getParameter("email");
-       String telefono = (String)request.getParameter("txtTelefono");
+        String nacimiento = request.getParameter("dNacimiento");
+        String email = (String)request.getParameter("email");
+        String telefono = (String)request.getParameter("txtTelefono");
        
         if(request.getSession().getAttribute("persona").equals("alumno")) {
            Alumno a = (Alumno)request.getSession().getAttribute("user");   
@@ -92,7 +93,7 @@ public class ActualizarServlet extends HttpServlet {
             a.setTelefono(telefono);
            data.updatePersona(a);
            
-           getServletContext().getRequestDispatcher(String.format("/perfil?id=%s&pers=alumno", a.getId()));      
+           response.sendRedirect("perfil?pers=alumno&id=" + a.getId());
            
        } else {
             if(request.getSession().getAttribute("persona").equals("profesor")) {
@@ -106,7 +107,8 @@ public class ActualizarServlet extends HttpServlet {
                  a.setTelefono(telefono);
                 data.updatePersona(a);
                 
-                getServletContext().getRequestDispatcher(String.format("/perfil?id=%s&pers=profesor", a.getId()));     
+                
+                response.sendRedirect("perfil?pers=profesor&id=" + a.getId());
             }
         }
             

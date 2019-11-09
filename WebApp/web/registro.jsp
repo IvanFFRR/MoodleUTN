@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,21 +35,41 @@
                 <tr>
                     <h2>Registro</h2>
                 </tr>
+                <tr>
+                        <th>Nombre</th> 
+                        <td><input type="text" name="nombre"></td>
+                    </tr>
+                    <tr>
+                        <th>Apellido</th> 
+                        <td><input type="text" name="apellido" value=""></td>
+                    </tr>
                     <tr>
                         <th>Legajo</th> 
                         <td><input type="number" name="legajo"></td>
                     </tr>
+                    <tr>
+                        <th>Tipo de documento</th>
+                        <td>
+                            <select name="tDoc"> 
+                            <c:forEach items="${tiposDocumento}" var="td">
+                                <option value="${td.id}">${td.tipo}</option>
+                            </c:forEach>
+                            
+                            </select>
+                        </td>
+                    </tr>
+                    
                     <tr>
                         <th>Documento</th> 
                         <td><input type="number" name="documento"></td>
                     </tr>
                     <tr>
                         <th>Fecha de nacimiento</th> 
-                        <td><input type="date" name="nacimiento" value="${user.fechaDeNacimiento}"></td>
+                        <td><input type="date" name="nacimiento"></td>
                     </tr>
                     <tr>   <th>Persona</th>
                         <td>                     
-                            <select name="Persona">
+                            <select name="persona">
                                         <option value="alumno">Alumno</option>
                                         <option value="profesor">Profesor</option>
                             </select>
@@ -57,15 +78,15 @@
                         
                         
                         <tr>
-                            <th>Email</th> <td><input type="email" name="email" value="${user.email}"></td>
+                            <th>Email</th> <td><input type="email" name="email"></td>
                         </tr>
                         <tr>
-                            <th>Teléfono</th>  <td><input type="tel" name="telefono" value="${user.telefono}"></td>
+                            <th>Teléfono</th>  <td><input type="tel" name="telefono"></td>
                         </tr>
                     </tr>  
                     
             </table>
-                    <input type="submit" name="btnSubmit" value="Registrarse">
+                    <input type="submit" class="button" value="Registrarse">
         </form>
     </body>
 </html>
