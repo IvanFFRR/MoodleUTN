@@ -14,6 +14,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="resources/tables.css">
+        <link rel="stylesheet" type="text/css" href="resources/buttons.css">
         <c:choose> 
             <c:when test="${empty user}">
                 <title>Iniciar sesión</title>
@@ -29,23 +31,28 @@
         <c:choose>
             <c:when test="${empty user}">
                     <form method="POST" action="login">
-                        <p></br>
-                            <label for="txtUser">Usuario:</label>
-                            <input name="txtUser"/>
-                        </p>
-                        <p>
-                            <select name="Persona">
-                                <option value="alumno">Alumno</option>
-                                <option value="profesor">Profesor</option>
-                            </select>
-                        </p>
-                        <p>
-                            <label for="txtPass">Contraseña:</label>
-                            <input type="password" name="txtPass"/>
-                        </p>
-                        <input type="submit" class="button" value="Ingresar"> 
-                        
-                    </form> 
+                        <table>
+                            <tr>
+                                <th>Usuario</th>
+                                <td><input name="txtUser"/></td>
+                            </tr>
+                            <tr>
+                                <th>Persona</th>
+                                <td>
+                                    <select name="Persona">
+                                        <option value="alumno">Alumno</option>
+                                        <option value="profesor">Profesor</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Contraseña</th>
+                                <td><input type="password" name="txtPass"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <input type="submit" class="button" value="Ingresar"> </td>
+                            </tr>
+                        </table>
                     <p>
                         ¿No tienes una cuenta? <a href="registro">Crea una</a> o <a href="login?pers=inv">entra como invitado</a>.
                     </p>
@@ -57,3 +64,5 @@
         </c:choose>
     </body>
 </html>
+
+

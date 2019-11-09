@@ -135,6 +135,7 @@ public class DataAccess {
                         rs.getString("nombre"),
                         p
                 );
+                m.setId(rs.getInt("id"));
                 lista.add(m);
             }
         } catch (SQLException e) {
