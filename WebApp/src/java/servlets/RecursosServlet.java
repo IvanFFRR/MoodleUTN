@@ -6,7 +6,12 @@
 package servlets;
 
 import controllers.DataAccess;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -85,29 +90,51 @@ public class RecursosServlet extends HttpServlet {
         
         HttpSession session = request.getSession();
         DataAccess data = new DataAccess();
-        for (Part part : request.getParts()) {
-            String fileName = getFileName(part);
-            if (!fileName.isEmpty()) {
-                part.write(fileName);
-                Boolean privado = request.getParameter("esPrivado") != null;
-                
-                Materia materia = (Materia)session.getAttribute("materia");
-                Date ahora = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-                Recurso r = new Recurso(ahora, materia, fileName, privado);
-                data.setRecurso(r);
+        final String ruta = getServletContext().getRealPath("/resources/archivos");
+        final Part filePart = request.getPart("archivo");
+        final String fileName = getFileName(filePart);
+
+        OutputStream out = null;
+        InputStream in = null;
+        final PrintWriter writer = response.getWriter();
+
+        try {
+            out = new FileOutputStream(new File(ruta + File.separator + fileName));
+            in = filePart.getInputStream();
+
+            int read;
+            final byte[] bytes = new byte[1024];
+
+            while ((read = in.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
             }
+        } catch (FileNotFoundException e) {
+            writer.println("Error in file upload  ERROR:" + e.getMessage());
+
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (writer != null) {
+                writer.close();
+            }
+            getServletContext().getRequestDispatcher("descargas").forward(request, response);
         }
     }
     
-    private String getFileName(Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                                      
-                return content.substring(content.lastIndexOf("\\") + 1, content.length() - 1);
-            }
+    private String getFileName(final Part part) {
+    final String partHeader = part.getHeader("content-disposition");
+    for (String content : part.getHeader("content-disposition").split(";")) {
+        if (content.trim().startsWith("filename")) {
+            return content.substring(
+                    content.indexOf('=') + 1).trim().replace("\"", "");
         }
-        return "";
     }
+    return null;
+}
 
     /**
      * Returns a short description of the servlet.

@@ -11,22 +11,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;" charset=UTF-8">
         <jsp:include page="menu.jsp"></jsp:include>
-        <style>
-            table {
-                margin: 10pt;
-            }
-            
-            h2 {
-                margin: 10pt;
-            }            
-            
-            th {
-                background-color: coral;
-                color: #222222;
-                text-align: left;
-                margin: 5pt;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="resources/tables.css">
+        <link rel="stylesheet" type="text/css" href="resources/buttons.css">
         <title>Registro</title>
     </head>
     <body>

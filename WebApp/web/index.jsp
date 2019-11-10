@@ -39,7 +39,7 @@
                             <tr>
                                 <th>Persona</th>
                                 <td>
-                                    <select name="Persona">
+                                    <select name="Persona" style="width: 100%; height: 100%">
                                         <option value="alumno">Alumno</option>
                                         <option value="profesor">Profesor</option>
                                     </select>
@@ -50,7 +50,7 @@
                                 <td><input type="password" name="txtPass"></td>
                             </tr>
                             <tr>
-                                <td colspan="2"> <input type="submit" class="button" value="Ingresar"> </td>
+                                <td colspan="2" class="buttonColumn"> <input type="submit" class="button" value="Ingresar" style="float:right"> </td>
                             </tr>
                         </table>
                     <p>

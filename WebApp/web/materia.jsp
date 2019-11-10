@@ -17,6 +17,8 @@
               $('[data-toggle="tooltip"]').tooltip();
             });
         </script>
+        <link rel="stylesheet" type="text/css" href="resources/tables.css">
+        <link rel="stylesheet" type="text/css" href="resources/buttons.css">
     </head>
     <body>
         <h1>${materia.nombre}</h1>

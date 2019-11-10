@@ -18,6 +18,8 @@
               $('[data-toggle="tooltip"]').tooltip();
             });
         </script> <%-- tooltip en el signo de pregunta de la forma --%>
+        <link rel="stylesheet" type="text/css" href="resources/tables.css">
+        <link rel="stylesheet" type="text/css" href="resources/buttons.css">
     </head>
     <body>
         

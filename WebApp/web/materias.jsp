@@ -16,6 +16,7 @@
         <title>Materias</title>
         <jsp:include page="menu.jsp" />    
         <link rel="stylesheet" type="text/css" href="resources/tables.css">
+        <link rel="stylesheet" type="text/css" href="resources/buttons.css">
     </head>
     <body>
         <h1>Materias</h1>
